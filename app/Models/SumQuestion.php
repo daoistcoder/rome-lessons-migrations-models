@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Activity extends Model
+class SumQuestion extends Model
 {
     use HasFactory;
 
-    public function lesson(): BelongsTo
+    public function summativeAssesment(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(SummativeAssesment::class);
     }
 
-    public function actQuestions(): HasMany
+    public function sumChoices(): HasMany
     {
-        return $this->hasMany(ActQuestion::class);
+        return $this->hasMany(SumChoice::class);
     }
 }

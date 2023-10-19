@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Activity extends Model
+class ExeQuestion extends Model
 {
     use HasFactory;
 
-    public function lesson(): BelongsTo
+    public function exercise(): BelongsTo
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(Exercise::class);
     }
 
-    public function actQuestions(): HasMany
+    public function exeChoices(): HasMany
     {
-        return $this->hasMany(ActQuestion::class);
+        return $this->hasMany(ExeChoice::class);
     }
 }

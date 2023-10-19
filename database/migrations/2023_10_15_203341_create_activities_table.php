@@ -16,11 +16,19 @@ return new class extends Migration
             $table->string('activity_title', 100);
             $table->text('objective');
 
+            $table->enum('solo_framework', [
+                'Pre-Stractural',
+                'Uni-Stractural',
+                'Multi-Stractural',
+                'Relational',
+                'Extended-Abstract'
+            ])->nullable();
+
             $table->unsignedBigInteger('lesson_id')->nullable();
             $table->foreign('lesson_id')
-            ->references('id')
-            ->on('lessons')
-            ->onDelete('set null');
+                ->references('id')
+                ->on('lessons')
+                ->onDelete('set null');
 
             $table->timestamps();
         });
