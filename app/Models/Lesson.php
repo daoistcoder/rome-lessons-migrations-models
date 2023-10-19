@@ -29,4 +29,9 @@ class Lesson extends Model
     {
         return $this->hasMany(Activity::class);
     }
+
+    public function summativeAssesments(): HasMany
+    {
+        return $this->hasMany(SummativeAssesment::class);
+    }
 }

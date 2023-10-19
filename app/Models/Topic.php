@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class CourseSkillTitle extends Model
+class Topic extends Model
 {
     use HasFactory;
 
-    public function subTopic(): BelongsTo {
-        return $this->belongsTo(SubTopic::class);
+    public function level(): BelongsTo {
+        return $this->belongsTo(Level::class);
     }
 
-    public function lessons(): HasMany
-    {
-        return $this->hasMany(Lesson::class);
+    public function subTopics(): HasMany {
+        return $this->hasMany(SubTopic::class);
     }
 }
