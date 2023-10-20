@@ -11,7 +11,7 @@ class DataByLevelController extends Controller
 
 public function displayAllData()
 {
-    $data = Level::with(['topics.subTopics.courseSkillTitles'])->get();
+    $data = Level::with(['topics.subTopics.courseSkillTitles.lessons'])->get();
     return view('welcome', ['data' => $data]);
 }
 
@@ -19,7 +19,7 @@ public function displayDataByLevel(Request $request)
 {
     $search = $request->input('search');
 
-    $query = Level::with(['topics.subTopics.courseSkillTitles']);
+    $query = Level::with(['topics.subTopics.courseSkillTitles.lessons']);
 
     if ($search) {
         if (is_numeric($search)) {
@@ -27,7 +27,8 @@ public function displayDataByLevel(Request $request)
         } else {
             $query->whereHas('topics.subTopics.courseSkillTitles', function ($subQuery) use ($search) {
                 $subQuery->where('sub_topic_title', 'LIKE', '%' . $search . '%')
-                    ->orWhere('skill_name', 'LIKE', '%' . $search . '%');
+                    ->orWhere('skill_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('course_title', 'LIKE', '%' . $search . '%');
             });
         }
     }
