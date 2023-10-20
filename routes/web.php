@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DataByLevelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Display all data initially
+Route::get('/welcome', [DataByLevelController::class, 'displayAllData'])->name('welcome');
+
+// Search and display data
+Route::post('/welcome/display_data_by_level', [DataByLevelController::class, 'displayDataByLevel'])
+    ->name('welcome.display_data_by_level');
