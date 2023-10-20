@@ -23,11 +23,17 @@ class LevelResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('level')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('content_area')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('pisa_framework')
+                    ->maxLength(255),
             ]);
     }
 
@@ -35,7 +41,20 @@ class LevelResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('level')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('content_area')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('pisa_framework')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -52,14 +71,14 @@ class LevelResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -67,5 +86,5 @@ class LevelResource extends Resource
             'create' => Pages\CreateLevel::route('/create'),
             'edit' => Pages\EditLevel::route('/{record}/edit'),
         ];
-    }    
+    }
 }

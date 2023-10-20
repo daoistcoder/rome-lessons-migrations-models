@@ -27,7 +27,12 @@ class CourseSkillTitleResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('sub_topic_id')
+                    ->relationship('subTopic', 'id'),
+                Forms\Components\TextInput::make('skill_name')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('course_title')
+                    ->maxLength(255),
             ]);
     }
 
@@ -35,7 +40,32 @@ class CourseSkillTitleResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('subTopic.topic.level.level')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subTopic.topic.level.content_area')
+                    ->label('Content Area')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subTopic.topic.level.pisa_framework')
+                    ->label('Pisa Framework')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subTopic.topic.topic_title')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('subTopic.sub_topic_title')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('skill_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('course_title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -52,14 +82,14 @@ class CourseSkillTitleResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -67,5 +97,5 @@ class CourseSkillTitleResource extends Resource
             'create' => Pages\CreateCourseSkillTitle::route('/create'),
             'edit' => Pages\EditCourseSkillTitle::route('/{record}/edit'),
         ];
-    }    
+    }
 }
