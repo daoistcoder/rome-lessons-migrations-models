@@ -45,7 +45,7 @@ class VideoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('lesson.id')
+                Tables\Columns\TextColumn::make('lesson.lesson_title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('video_title')

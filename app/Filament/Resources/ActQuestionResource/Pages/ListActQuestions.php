@@ -10,6 +10,8 @@ class ListActQuestions extends ListRecords
 {
     protected static string $resource = ActQuestionResource::class;
 
+    protected static ?string $title = 'Activity Questions';
+
     protected function getHeaderActions(): array
     {
         return [
