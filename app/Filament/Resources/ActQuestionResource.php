@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ActQuestionResource\Pages;
 use App\Filament\Resources\ActQuestionResource\RelationManagers;
 use App\Models\ActQuestion;
+use App\Models\Lesson;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -34,10 +36,25 @@ class ActQuestionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('activity.lesson.courseSkillTitle.course_title')
+                    ->label('Course Title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Group::make('activity.lesson.lesson_title')
+                    ->label('Lesson Title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Group::make('activity.activity_title')
+                    ->label('Activity Title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+            ])->defaultGroup('activity.lesson.courseSkillTitle.course_title')
             ->columns([
                 Tables\Columns\TextColumn::make('activity.lesson.courseSkillTitle.course_title')
                     ->label('Course Title')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('activity.lesson.lesson_title')
                     ->label('Lesson Title')
@@ -56,19 +73,19 @@ class ActQuestionResource extends Resource
                 Tables\Columns\TextColumn::make('learning_tools')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actChoices.choice_text')
-                ->label('Choices')
+                    ->label('Choices')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actChoices.actFeedback.activity_feedback')
-                ->label('Feedbacks')
+                    ->label('Feedbacks')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actHints.first_hint')
-                ->label('Hint')
+                    ->label('Hint')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actHints.technical_hint')
-                ->label('Technical Hint')
+                    ->label('Technical Hint')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('actHints.growth_mindset_hint')
-                ->label('Growth mindset Hint')
+                    ->label('Growth mindset Hint')
                     ->searchable(),
             ])
             ->filters([
