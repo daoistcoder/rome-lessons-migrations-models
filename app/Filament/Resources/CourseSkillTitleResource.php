@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -17,11 +18,11 @@ class CourseSkillTitleResource extends Resource
 {
     protected static ?string $model = CourseSkillTitle::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationLabel = 'Courses';
+    protected static ?string $navigationLabel = 'Skills Map';
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationIcon = 'heroicon-o-map';
 
     public static function form(Form $form): Form
     {
@@ -39,14 +40,36 @@ class CourseSkillTitleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                Group::make('subTopic.topic.level.level')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Group::make('subTopic.topic.level.content_area')
+                    ->collapsible()
+                    ->label('Content Area')
+                    ->titlePrefixedWithLabel(false),
+                Group::make('subTopic.topic.level.pisa_framework')
+                    ->collapsible()
+                    ->label('Pisa Framework')
+                    ->titlePrefixedWithLabel(false),
+                Group::make('subTopic.topic.topic_title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+                Group::make('subTopic.sub_topic_title')
+                    ->collapsible()
+                    ->titlePrefixedWithLabel(false),
+            ])->defaultGroup('subTopic.topic.level.level')
             ->columns([
                 Tables\Columns\TextColumn::make('subTopic.topic.level.level')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('subTopic.topic.level.content_area')
                     ->label('Content Area')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('subTopic.topic.level.pisa_framework')
                     ->label('Pisa Framework')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('subTopic.topic.topic_title')
                     ->numeric()
@@ -94,7 +117,6 @@ class CourseSkillTitleResource extends Resource
     {
         return [
             'index' => Pages\ListCourseSkillTitles::route('/'),
-            'create' => Pages\CreateCourseSkillTitle::route('/create'),
             'edit' => Pages\EditCourseSkillTitle::route('/{record}/edit'),
         ];
     }

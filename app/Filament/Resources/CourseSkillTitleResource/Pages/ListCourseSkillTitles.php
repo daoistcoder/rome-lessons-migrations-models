@@ -10,6 +10,8 @@ class ListCourseSkillTitles extends ListRecords
 {
     protected static string $resource = CourseSkillTitleResource::class;
 
+    protected static ?string $title = 'Skills Map';
+
     protected function getHeaderActions(): array
     {
         return [

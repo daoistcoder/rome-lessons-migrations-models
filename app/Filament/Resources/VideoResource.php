@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LevelResource\Pages;
-use App\Filament\Resources\LevelResource\RelationManagers;
-use App\Models\Level;
+use App\Filament\Resources\VideoResource\Pages;
+use App\Filament\Resources\VideoResource\RelationManagers;
+use App\Models\Video;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,27 +13,31 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LevelResource extends Resource
+class VideoResource extends Resource
 {
-    protected static ?string $model = Level::class;
+    protected static ?string $model = Video::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationLabel = 'Skills Map';
-
-    protected static ?string $navigationIcon = 'heroicon-o-map';
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('level')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('content_area')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('pisa_framework')
-                    ->maxLength(255),
+                Forms\Components\Select::make('lesson_id')
+                    ->relationship('lesson', 'id'),
+                Forms\Components\TextInput::make('video_title')
+                    ->required()
+                    ->maxLength(100),
+                Forms\Components\Textarea::make('video_url')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('video_description')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -41,11 +45,10 @@ class LevelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('level')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('content_area')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('pisa_framework')
+                Tables\Columns\TextColumn::make('lesson.id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('video_title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -71,20 +74,20 @@ class LevelResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLevels::route('/'),
-            'create' => Pages\CreateLevel::route('/create'),
-            'edit' => Pages\EditLevel::route('/{record}/edit'),
+            'index' => Pages\ListVideos::route('/'),
+            'create' => Pages\CreateVideo::route('/create'),
+            'edit' => Pages\EditVideo::route('/{record}/edit'),
         ];
-    }
+    }    
 }
